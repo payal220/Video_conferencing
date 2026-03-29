@@ -63,6 +63,10 @@ const login = async (req, res) => {
       }
     })
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(e => e.message)
+      return res.status(400).json({ message: messages[0] })
+    }
     res.status(500).json({ message: 'Server error', error: error.message })
   }
 }
