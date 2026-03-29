@@ -5,6 +5,7 @@ import ProtectedRoute from './protectedRoute/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import Room from './pages/Room'
 
 function App() {
   return (
@@ -16,6 +17,11 @@ function App() {
           <Route path="/" element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/room/:roomId" element={
+            <ProtectedRoute>
+              <Room />
             </ProtectedRoute>
           } />
           <Route path="*" element={<Navigate to="/" replace />} />
