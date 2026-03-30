@@ -1,6 +1,6 @@
 import AgoraRTC from 'agora-rtc-sdk-ng'
 
-const APP_ID = process.env.REACT_APP_AGORA_APP_ID
+const APP_ID = 'b12d8611b83b474786a1ed784cf1886d'
 
 const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
 

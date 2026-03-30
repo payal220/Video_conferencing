@@ -1,6 +1,6 @@
 import AgoraRTM from 'agora-rtm-sdk'
 
-const APP_ID = process.env.REACT_APP_AGORA_APP_ID
+const APP_ID = 'b12d8611b83b474786a1ed784cf1886d'
 
 let rtmClient
 let rtmChannel
