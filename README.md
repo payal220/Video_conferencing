@@ -299,7 +299,7 @@ The app will open at `http://localhost:3000`
 ## 👩‍💻 Developer
 
 **Payal Pal**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- GitHub: (https://github.com/payal22)
 
 ---
 
