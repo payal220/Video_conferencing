@@ -13,12 +13,22 @@ dotenv.config()
 const app = express()
 
 // Middleware
-app.use(cors())
+
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://smart-meet.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Routes
 app.use('/api/auth', authRoutes)
+
+
 
 // Test route
 app.get('/', (req, res) => {
@@ -29,9 +39,13 @@ app.get('/', (req, res) => {
 const server = http.createServer(app)
 
 // Attach Socket.io to HTTP server
+
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: [
+      'http://localhost:3000',
+      'https://smart-meet.vercel.app'
+    ],
     methods: ['GET', 'POST']
   }
 })
