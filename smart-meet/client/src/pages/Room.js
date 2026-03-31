@@ -30,6 +30,7 @@ const Room = () => {
     const messagesEndRef = useRef(null)
     const rtmChannelRef = useRef(null)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         initRoom()
         return () => cleanup()
