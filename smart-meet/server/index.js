@@ -16,7 +16,7 @@ const app = express()
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://video-conferencing-4dq99e5w7-pp19.vercel.app'
+    'https://video-conferencing-six-lilac.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
@@ -43,7 +43,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       'http://localhost:3000',
-      'https://video-conferencing-4dq99e5w7-pp19.vercel.app'
+      'https://video-conferencing-six-lilac.vercel.app'
     ],
     methods: ['GET', 'POST']
   }
