@@ -1,0 +1,225 @@
+##Smart-Meet — Video Conferencing Application
+Full Stack Development with MERN | Project Documentation
+
+1. Introduction
+Project Title: Smart-Meet — A Full Stack Real-Time Video Conferencing Web Application
+Team Members:
+NameRoleResponsibilitiesPayal PalFull Stack DeveloperFrontend, Backend, Database, Deployment
+
+2. Project Overview
+Purpose:
+Smart-Meet is a real-time video conferencing web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) along with Agora RTC 
+and RTM SDKs. The application enables users to conduct video meetings, chat in real-time, and collaborate remotely — similar to Google Meet or Zoom.
+The primary goals of this project are:
+
+To provide seamless real-time video and audio communication between multiple users
+To enable in-meeting chat using Agora RTM for real-time messaging
+To implement secure user authentication using JWT tokens
+To support screen sharing for presentations and collaboration
+To store meeting room data persistently using MongoDB Atlas
+
+Features:
+FeatureDescriptionUser AuthenticationRegister and login with JWT-based secure authenticationVideo CallsReal-time video/audio using Agora RTC SDKIn-Meet 
+ChatReal-time messaging using Agora RTM SDKScreen SharingShare screen with all participants in the roomMute/UnmuteToggle microphone on or off during 
+meetingsCamera ToggleTurn camera on or off during meetingsCreate RoomsInstantly create a meeting room with unique Room IDJoin RoomsJoin existing rooms by 
+entering Room IDScheduled MeetingsSchedule meetings for a future date and timeProtected RoutesOnly authenticated users can access meeting roomsMultiple 
+ParticipantsMultiple users can join the same room simultaneously
+
+3. Architecture
+Frontend (React.js):
+The frontend is built using React.js with a component-based architecture. It uses React Router DOM for client-side routing, Context API for global state 
+management, and Axios for HTTP requests to the backend API.
+Key frontend components:
+
+AuthContext: Global state management for user authentication and JWT token storage
+ProtectedRoute: Route guard that redirects unauthenticated users to the login page
+AgoraSetup.js: Handles Agora RTC initialization, video/audio track management, and remote user handling
+AgoraRTMSetup.js: Handles Agora RTM initialization for real-time in-meeting chat
+Socket.js: Socket.io client configuration for real-time room events
+
+Backend (Node.js + Express.js):
+The backend follows an MVC pattern using Node.js and Express.js. It provides RESTful API endpoints for authentication and uses Socket.io for real-time 
+bidirectional communication.
+Key backend components:
+
+controllers/auth.js: Handles register and login logic with bcrypt password hashing and JWT token generation
+middleware/auth.js: JWT verification middleware for protecting API routes
+models/User.js: Mongoose schema for user data with pre-save password hashing
+models/Rooms.js: Mongoose schema for meeting room data
+routes/auth.js: Express router for authentication endpoints
+socket/roomHandler.js: Socket.io event handlers for room join, leave, and disconnect events
+
+Database (MongoDB Atlas):
+The application uses MongoDB Atlas as the database. Mongoose ODM is used for schema definition and database interactions.
+User Schema:
+FieldTypeRequiredDescriptionusernameStringYesDisplay name of the useremailStringYes (unique)Email address used for loginpasswordStringYesBcrypt hashed 
+passwordcreatedAtDateAutoAccount creation timestamp
+Room Schema:
+FieldTypeRequiredDescriptionroomIdStringYes (unique)Unique identifier for the roomroomNameStringYesDisplay name of the meeting roomhostObjectId (User)YesReference 
+to the user who created the roomparticipants[ObjectId]NoArray of user references in the roommeetTypeStringNoinstant or scheduledmeetTimingsDateNoScheduled meeting 
+date and timeisActiveBooleanAutoWhether the room is currently active
+
+4. Setup Instructions
+Prerequisites:
+SoftwareVersionDownloadNode.jsv18 or higherhttps://nodejs.org/npmv8 or higherIncluded with Node.jsGitLatesthttps://git-scm.com/MongoDB Atlas AccountFree 
+tierhttps://cloud.mongodb.com/Agora AccountFree tierhttps://console.agora.io/VS CodeLatesthttps://code.visualstudio.com/
+Installation:
+Step 1 — Clone the repository:
+git clone https://github.com/payal220/Video_conferencing.git
+cd Video_conferencing/smart-meet
+Step 2 — Install server dependencies:
+cd server
+npm install
+Step 3 — Install client dependencies:
+cd ../client
+npm install
+Environment Variables:
+Create server/.env:
+PORT=5000
+MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/smartmeet?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key
+AGORA_APP_ID=your_agora_app_id
+Create client/.env:
+REACT_APP_AGORA_APP_ID=your_agora_app_id
+REACT_APP_SERVER_URL=http://localhost:5000
+
+5. Folder Structure
+Client (React Frontend):
+PathDescriptionclient/src/components/Reusable UI componentsclient/src/context/AuthContext.jsGlobal authentication state using Context APIclient/src/pages/Login.jsLogin 
+page componentclient/src/pages/Register.jsRegister page componentclient/src/pages/Home.jsHome/dashboard page with create and join roomclient/src/pages/Room.jsVideo call 
+room with chat and controlsclient/src/protectedRoute/ProtectedRoute.jsRoute guard for authenticated routesclient/src/styles/CSS stylesheets for all pagesclient/src/AgoraSetup.jsAgora 
+RTC configuration for video/audioclient/src/AgoraRTMSetup.jsAgora RTM configuration for chatclient/src/Socket.jsSocket.io client setupclient/src/App.jsMain app component with 
+routingclient/src/config.jsServer URL configuration
+Server (Node.js Backend):
+PathDescriptionserver/controllers/auth.jsRegister and login business logicserver/middleware/auth.jsJWT token verification middlewareserver/models/User.jsMongoose User 
+schema with password hashingserver/models/Rooms.jsMongoose Room schemaserver/routes/auth.jsExpress routes for /api/auth endpointsserver/socket/roomHandler.jsSocket.io room 
+event handlersserver/index.jsServer entry point with Express and Socket.ioserver/.envEnvironment variables (never commit to GitHub)
+
+6. Running the Application
+Start the Backend Server:
+Open Terminal 1 and run:
+cd server
+node index.js
+Expected output:
+MongoDB connected!
+Server running on port 5000
+Start the Frontend:
+Open Terminal 2 and run:
+cd client
+npm start
+The React app opens at http://localhost:3000
+Production URLs:
+ServiceURLFrontend (Vercel)https://video-conferencing-six-lilac.vercel.appBackend (Render)https://video-conferencing-rekf.onrender.comDatabaseMongoDB Atlas
+(cloud.mongodb.com)
+
+7. API Documentation
+Base URL:
+
+Development: http://localhost:5000
+Production: https://video-conferencing-rekf.onrender.com
+
+POST /api/auth/register
+Description: Register a new user account
+Request Body:
+json{
+  "username": "John",
+  "email": "john@gmail.com",
+  "password": "john1234"
+}
+Success Response (201):
+json{
+  "message": "User registered successfully",
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": "64f3a2b1c4e5d6f7a8b9c0d1",
+    "username": "John",
+    "email": "john@gmail.com"
+  }
+}
+POST /api/auth/login
+Description: Login with existing credentials
+Request Body:
+json{
+  "email": "john@gmail.com",
+  "password": "john1234"
+}
+Success Response (200):
+json{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": "64f3a2b1c4e5d6f7a8b9c0d1",
+    "username": "John",
+    "email": "john@gmail.com"
+  }
+}
+Socket.io Events:
+EventDirectionDescriptionjoin-roomClient → ServerUser joins a meeting roomuser-joinedServer → ClientNotifies others when a new user joinsleave-roomClient → ServerUser 
+leaves the meeting roomuser-leftServer → ClientNotifies others when a user leavesroom-usersServer → ClientReturns current users in the room
+
+8. Authentication
+Overview:
+Smart-Meet uses JWT (JSON Web Tokens) for stateless authentication. The authentication flow is:
+
+User submits registration or login form with credentials
+Server validates credentials and generates a JWT token signed with JWT_SECRET
+Token is returned to the client and stored in localStorage
+For subsequent requests, the token is sent in the Authorization header as: Bearer <token>
+The auth middleware on the server verifies the token and attaches the user to the request
+Protected routes are only accessible with a valid token
+
+Password Security:
+
+Passwords are hashed using bcryptjs with 10 salt rounds
+bcrypt.compare() is used for timing-attack resistant password comparison
+Minimum password length of 6 characters enforced at the model level
+
+Token Details:
+PropertyValueAlgorithmHS256 (HMAC SHA-256)Expiry7 daysStoragelocalStorage on clientHeader formatAuthorization: Bearer token
+
+9. User Interface
+Pages Overview:
+PageRouteDescriptionLogin/loginEmail and password login formRegister/registerUsername, email and password registration formHome/Dashboard with Create Room and 
+Join Room cardsRoom/room/:roomIdVideo call room with chat sidebar and controls
+Room Page Features:
+
+Video grid displaying all participants with name labels
+In-meet chat sidebar with real-time messaging
+Bottom control bar with Mute, Stop Camera, Share Screen, Hide Chat and Leave Room buttons
+Room ID displayed in header for easy sharing with participants
+Participant count shown in top right corner
+Dark theme optimized for video conferencing
+
+
+10. Testing
+Manual Testing Tools:
+ToolPurposeThunder Client (VS Code)Testing REST API endpointsBrowser DevToolsConsole logging, network requests, error debuggingMultiple browser tabsTesting 
+multi-participant video callsMongoDB CompassVerifying database recordscurl commandsCommand-line API testing
+Test Cases:
+Test CaseExpected ResultStatusRegister with valid dataUser created, token returned, redirect to homePassRegister with existing emailError: User already 
+existsPassRegister with short passwordValidation error shownPassLogin with valid credentialsToken returned, redirect to homePassLogin with wrong passwordError: Invalid 
+email or passwordPassAccess home without loginRedirect to login pagePassCreate a meeting roomRoom created, navigate to video roomPassJoin room with Room IDUser joins 
+existing roomPassVideo call between two usersBoth users see each otherPassSend chat messageMessage appears for all participantsPassMute/unmute microphoneAudio toggles 
+correctlyPassToggle camera on/offVideo toggles correctlyPassLeave roomUser exits, others notifiedPass
+
+11. Screenshots / Demo
+Live Demo:
+https://video-conferencing-six-lilac.vercel.app
+Key Screens:
+
+Register Page: Clean form with blue gradient background for user registration
+Login Page: Simple login form with link to register page
+Home Page: Dashboard with Create Room and Join Room cards side by side
+Room Page: Dark-themed video grid with chat sidebar and bottom control bar
+
+
+12. Known Issues
+IssueDescriptionWorkaroundRender cold startFree tier server sleeps after 15 min inactivity — first request takes 30-60 secondsWait for server to wake up before 
+logging inCamera permissionsBrowser may block camera on first visitClick camera icon in address bar and allow accessAgora testing modeApp ID is in testing mode — 
+not suitable for production scaleGenerate token server for production useBundle sizeReact bundle is larger than recommended (834KB)Implement code splitting in future version
+
+13. Future Enhancements
+EnhancementDescriptionPriorityToken-based Agora authReplace testing mode with proper token generation serverHighMeeting recordingAllow hosts to record meetings and save 
+themHighUser profilesAdd profile pictures and display namesMediumMeeting historyShow past meetings in user dashboardMediumWaiting roomHost approves participants before 
+they joinMediumEmail invitationsSend meeting invites via email with room linkMediumCode splittingReduce bundle size for faster loadingMediumRaise hand featureParticipants 
+can raise hand to speakLowWhiteboardCollaborative whiteboard during meetingsLowMobile appReact Native version for iOS and AndroidLow
